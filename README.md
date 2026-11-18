@@ -111,6 +111,21 @@ iPhone にインストールするネイティブ版のビルドには [EAS Buil
 
 Expo Workflows が Web 版の出力とデプロイを実行するため、この流れではローカルで `npx expo export --platform web` や `npx eas-cli@latest deploy` を実行する必要はありません。実行中は **Workflows** で完了を待ち、失敗時は対象ジョブのログを確認します。現在の設定では README のみの変更でも PR と `main` への反映がそれぞれデプロイを起動します。
 
+### 無料枠の実行待ちと手動プレビュー
+
+ログに `Waiting to start` と `waiting in the Free Tier queue` が表示されている間は、Expo のクラウド実行枠が空くのを待っています。このリポジトリの初回実行では、キューに入った時点で約 35.5 分の待ち時間が表示されました。これはその時点の目安で、待ち時間は混雑状況によって変わります。
+
+PR に短時間で何度も push すると、更新ごとのプレビューが実行待ちになり、成功したデプロイごとに URL が発行されます。すぐに Web 版を確認したいときは、プロジェクトのルートで次を実行します。
+
+```bash
+npx expo export --platform web
+npx eas-cli@latest deploy
+```
+
+手動では自分の PC で Web 版を出力し、その結果を Expo Hosting にアップロードするため、Expo Workflows の実行待ちを経ずにプレビューを公開できます。表示されたプレビュー URL を Safari や Chrome で開いて確認します。
+
+プレビューを必要なときだけ手動で公開し、本番だけ自動化する運用に変更する場合は、`pr-preview.yml` を削除し、`deploy-production.yml` を残します。本番の自動デプロイには引き続きクラウドの実行待ちが発生することがあります。
+
 [Expo 公式の Workflows による Web デプロイ手順](https://docs.expo.dev/eas/hosting/workflows/)
 
 ## Get a fresh project
