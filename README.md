@@ -27,6 +27,8 @@ You can start developing by editing the files inside the **src/app** directory. 
 
 ## 開発中の実機確認と Web 版の使い分け
 
+![カワウソが案内する Expo Go の実機確認、Expo Hosting の Web 版共有、TestFlight の配布前チェック](docs/images/expo-app-guide.webp)
+
 ```mermaid
 flowchart TD
     A["ローカルでExpoアプリを開発"]
