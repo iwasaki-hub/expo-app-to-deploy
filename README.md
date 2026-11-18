@@ -25,6 +25,45 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
+## Expo Hosting に Web プレビューをデプロイする
+
+このリポジトリの Web 版は、[Expo の `@masa-practice/expo-app-to-deploy` プロジェクト](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy)に紐づいています。以下の手順で、ローカルのコードを Safari や Chrome で確認できるプレビュー URL に公開できます。
+
+### 1. 依存関係をインストールして Expo にログインする
+
+リポジトリのルートで実行します。
+
+```bash
+npm ci
+npx eas-cli@latest login
+npx eas-cli@latest whoami
+npx eas-cli@latest project:info
+```
+
+`project:info` に `@masa-practice/expo-app-to-deploy` が表示されることを確認します。このリポジトリの [app.json](app.json) には `expo.owner` と `expo.extra.eas.projectId` が設定済みです。
+
+初回のセットアップなどで `EAS project not configured` が表示された場合は、Expo ダッシュボードで対象プロジェクトの Project ID を確認し、既存のプロジェクトに紐づけます。
+
+```bash
+npx eas-cli@latest init --id 200513de-0587-41c5-bf74-dbad4d538415 --non-interactive
+npx eas-cli@latest project:info
+```
+
+### 2. Web 版を出力してプレビューを公開する
+
+このプロジェクトでは `expo.web.output` に `server` を設定しています。Web 版を `dist/` に出力し、Expo Hosting にアップロードします。
+
+```bash
+npx expo export --platform web
+npx eas-cli@latest deploy
+```
+
+初回にプレビュー用のサブドメインを求められたら選択します。完了後、ターミナルに表示される `https://…expo.app` の URL を Safari や Chrome で開きます。デプロイ履歴は [Expo ダッシュボード](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy)で確認できます。
+
+コードを変更したら、Web 版の出力とデプロイの両方を再実行します。iPhone にインストールするネイティブ版のビルドには [EAS Build](https://docs.expo.dev/build/setup/) を使います。
+
+[Expo 公式の Web デプロイ手順](https://docs.expo.dev/deploy/web/)
+
 ## Get a fresh project
 
 When you're ready, run:
