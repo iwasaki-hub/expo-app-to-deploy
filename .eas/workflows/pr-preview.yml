@@ -1,0 +1,12 @@
+name: Web Preview
+
+on:
+  pull_request: {}
+
+jobs:
+  deploy:
+    name: Deploy Web Preview
+    type: deploy
+    environment: preview
+    params:
+      prod: false
