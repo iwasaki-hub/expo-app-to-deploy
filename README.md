@@ -64,18 +64,31 @@ Web プレビューを公開するには、新しいアプリの `expo.web.outpu
 
 ### 2. Web 版を出力してプレビューを公開する
 
-Web 版を `dist/` に出力し、Expo Hosting にアップロードします。
-
 ```bash
 npx expo export --platform web
 npx eas-cli@latest deploy
 ```
 
-初回にプレビュー用のサブドメインを求められたら選択します。完了後、ターミナルに表示される `https://…expo.app` の URL を Safari や Chrome で開きます。デプロイ履歴は [Expo ダッシュボード](https://expo.dev/accounts/masa-practice)で対象プロジェクトを開いて確認できます。
+最初のコマンドで Web 版を `dist/` に出力し、次のコマンドで Expo Hosting に公開します。初回にプレビュー用のサブドメインを求められたら選択します。
 
-コードを変更したら、Web 版の出力とデプロイの両方を再実行します。iPhone にインストールするネイティブ版のビルドには [EAS Build](https://docs.expo.dev/build/setup/) を使います。
+完了後は、ターミナルに表示されるプレビュー URL を Safari や Chrome で開きます。このプロジェクトの例は [https://expo-app-to-deploy--iyy4d934e6.expo.app/](https://expo-app-to-deploy--iyy4d934e6.expo.app/) です。末尾の `--iyy4d934e6` はデプロイ ID で、次回のデプロイでは別の URL が発行されます。
 
-[Expo 公式の Web デプロイ手順](https://docs.expo.dev/deploy/web/)
+### 3. 固定の本番 URL に公開する
+
+プレビューで動作を確認したら、同じソースから Web 版を出力し、本番に公開します。
+
+```bash
+npx expo export --platform web
+npx eas-cli@latest deploy --prod
+```
+
+このプロジェクトの本番 URL は [https://expo-app-to-deploy.expo.app/](https://expo-app-to-deploy.expo.app/) です。本番デプロイを実行するたびに、同じ URL に新しいバージョンが反映されます。
+
+ソースを変更して GitHub に `git push` した後は、変更が入っているローカルのプロジェクトルートで Web 版を再出力し、公開先に応じて `deploy` または `deploy --prod` を実行します。この手順では Expo Hosting へのデプロイは手動です。デプロイ履歴は [Expo ダッシュボードの対象プロジェクト](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy) の Hosting で確認できます。
+
+iPhone にインストールするネイティブ版のビルドには [EAS Build](https://docs.expo.dev/build/setup/) を使います。
+
+[Expo 公式の Web デプロイ手順](https://docs.expo.dev/deploy/web/) · [プレビューと本番の URL](https://docs.expo.dev/eas/hosting/deployments-and-aliases/)
 
 ## Get a fresh project
 
