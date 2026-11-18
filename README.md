@@ -25,6 +25,27 @@ In the output, you'll find options to open the app in a
 
 You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
+## 開発中の実機確認と Web 版の使い分け
+
+このプロジェクトは iOS・Android 向けの Expo アプリで、Safari や Chrome でも Web 版を確認できます。
+
+| 確認環境 | 用途 |
+| --- | --- |
+| [Expo Go](https://expo.dev/go) | 開発中に iPhone 実機で画面、タップ操作、キーボード、アクセシビリティをこまめに確認する |
+| Expo Hosting | Web 版を Safari や Chrome で確認し、プレビュー URL を共有する |
+| [開発ビルド](https://docs.expo.dev/develop/development-builds/introduction/) | Expo Go に含まれないネイティブ機能やアプリ固有の設定を実機で確認する |
+| [TestFlight](https://docs.expo.dev/tutorial/eas/ios-production-build/) | 配布する iOS ビルドで最終確認する |
+
+開発中は、プロジェクトのルートで `npx expo start` を実行し、ターミナルに表示された QR コードを iPhone で読み取って Expo Go で開きます。ソースの変更を実機で確認するたびに Expo Hosting へ公開する必要はありません。
+
+### iPhone でアクセシビリティを確認する
+
+- VoiceOver をオンにして、読み上げ順、ボタン名、フォーカスの移動を確認します。
+- iOS の文字サイズを大きくし、文字切れやボタンの重なりがないか確認します。
+- Web 版も公開する場合は、iPhone の Safari でも同じ項目を確認します。ブラウザの表示領域、スクロール、キーボード、読み上げやフォーカスの動きは、ネイティブ版と異なる場合があります。
+
+Expo Workflows の自動公開は Web 版に適用されます。iOS 版を配布する前は、TestFlight でアクセシビリティと主要な操作を確認します。
+
 ## Expo Hosting に Web プレビューをデプロイする
 
 このリポジトリの Web 版は、[Expo の `@masa-practice/expo-app-to-deploy` プロジェクト](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy)に紐づいています。以下の手順で、ローカルのコードを Safari や Chrome で確認できるプレビュー URL に公開できます。
