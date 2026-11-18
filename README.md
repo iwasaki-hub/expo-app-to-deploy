@@ -49,16 +49,29 @@ npx eas-cli@latest init --id 200513de-0587-41c5-bf74-dbad4d538415 --non-interact
 npx eas-cli@latest project:info
 ```
 
+#### Expo にまだ登録していない新しいアプリの場合
+
+新しいアプリ自身のプロジェクトルートで依存関係をインストールし、Expo にログインします。アプリ設定（`app.json` など）の `expo.slug` に新しいアプリのスラッグ、`expo.owner` に `masa-practice` を設定します。
+
+```bash
+npx eas-cli@latest init --account masa-practice --non-interactive
+npx eas-cli@latest project:info
+```
+
+初期化によって EAS プロジェクトが作成され、ローカルのアプリに紐づきます。`project:info` に `@masa-practice/新しいアプリのスラッグ` が表示されることを確認します。このリポジトリをひな形に使う場合は、初期化前にアプリ設定からコピー元の `expo.extra.eas.projectId` を削除してください。
+
+Web プレビューを公開するには、新しいアプリの `expo.web.output` を `static` または `server` に設定し、次の手順に進みます。
+
 ### 2. Web 版を出力してプレビューを公開する
 
-このプロジェクトでは `expo.web.output` に `server` を設定しています。Web 版を `dist/` に出力し、Expo Hosting にアップロードします。
+Web 版を `dist/` に出力し、Expo Hosting にアップロードします。
 
 ```bash
 npx expo export --platform web
 npx eas-cli@latest deploy
 ```
 
-初回にプレビュー用のサブドメインを求められたら選択します。完了後、ターミナルに表示される `https://…expo.app` の URL を Safari や Chrome で開きます。デプロイ履歴は [Expo ダッシュボード](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy)で確認できます。
+初回にプレビュー用のサブドメインを求められたら選択します。完了後、ターミナルに表示される `https://…expo.app` の URL を Safari や Chrome で開きます。デプロイ履歴は [Expo ダッシュボード](https://expo.dev/accounts/masa-practice)で対象プロジェクトを開いて確認できます。
 
 コードを変更したら、Web 版の出力とデプロイの両方を再実行します。iPhone にインストールするネイティブ版のビルドには [EAS Build](https://docs.expo.dev/build/setup/) を使います。
 
