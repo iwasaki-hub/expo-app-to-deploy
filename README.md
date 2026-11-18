@@ -84,11 +84,34 @@ npx eas-cli@latest deploy --prod
 
 このプロジェクトの本番 URL は [https://expo-app-to-deploy.expo.app/](https://expo-app-to-deploy.expo.app/) です。本番デプロイを実行するたびに、同じ URL に新しいバージョンが反映されます。
 
-ソースを変更して GitHub に `git push` した後は、変更が入っているローカルのプロジェクトルートで Web 版を再出力し、公開先に応じて `deploy` または `deploy --prod` を実行します。この手順では Expo Hosting へのデプロイは手動です。デプロイ履歴は [Expo ダッシュボードの対象プロジェクト](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy) の Hosting で確認できます。
+ソースを変更して GitHub に `git push` した後は、変更が入っているローカルのプロジェクトルートで Web 版を再出力し、公開先に応じて `deploy` または `deploy --prod` を実行します。この手順は手動で公開する場合に使います。GitHub に push してから自動で公開する手順は次のセクションを参照してください。デプロイ履歴は [Expo ダッシュボードの対象プロジェクト](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy) の Hosting で確認できます。
 
 iPhone にインストールするネイティブ版のビルドには [EAS Build](https://docs.expo.dev/build/setup/) を使います。
 
 [Expo 公式の Web デプロイ手順](https://docs.expo.dev/deploy/web/) · [プレビューと本番の URL](https://docs.expo.dev/eas/hosting/deployments-and-aliases/)
+
+## GitHub 連携で Web 版を自動デプロイする
+
+### 初回セットアップ
+
+1. [Expo プロジェクト](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy) の **GitHub settings** を開き、画面の案内に沿って Expo の GitHub App を設定し、`iwasaki-hub/expo-app-to-deploy` を接続します。
+2. `app.json` と `package.json` はリポジトリのルートにあるため、**Base directory** は空欄にします。
+3. リポジトリのルートにある `.eas/workflows/` の YAML を使います。**Get started** で表示される `eas build --platform all` は iOS / Android のネイティブビルド用です。Web 自動デプロイの設定は以下の YAML で行います。
+
+| 設定ファイル | 実行条件 | 公開先 |
+| --- | --- | --- |
+| [pr-preview.yml](.eas/workflows/pr-preview.yml) | PR の作成・再オープン・更新 | デプロイごとのプレビュー URL |
+| [deploy-production.yml](.eas/workflows/deploy-production.yml) | `main` への push（PR のマージを含む） | [固定の本番 URL](https://expo-app-to-deploy.expo.app/) |
+
+### 変更を公開する
+
+1. 作業ブランチに変更を push して PR を作成します。PR に追加のコミットを push すると、新しいプレビューが作られます。
+2. Expo ダッシュボードの **Workflows** で **Web Preview** の実行状況を確認し、成功後に **Hosting** で発行されたプレビュー URL を開きます。
+3. PR を `main` にマージすると **Web Production** が起動します。成功後に固定の本番 URL で反映を確認します。
+
+Expo Workflows が Web 版の出力とデプロイを実行するため、この流れではローカルで `npx expo export --platform web` や `npx eas-cli@latest deploy` を実行する必要はありません。実行中は **Workflows** で完了を待ち、失敗時は対象ジョブのログを確認します。現在の設定では README のみの変更でも PR と `main` への反映がそれぞれデプロイを起動します。
+
+[Expo 公式の Workflows による Web デプロイ手順](https://docs.expo.dev/eas/hosting/workflows/)
 
 ## Get a fresh project
 
