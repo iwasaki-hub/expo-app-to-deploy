@@ -27,6 +27,24 @@ You can start developing by editing the files inside the **src/app** directory. 
 
 ## 開発中の実機確認と Web 版の使い分け
 
+```mermaid
+flowchart TD
+    A["ローカルでExpoアプリを開発"]
+
+    A --> B["Expo Go"]
+    A --> C["Expo Hosting"]
+    A --> D["開発ビルド・TestFlight"]
+
+    B --> B1["開発中にiPhone実機で確認・画面・タップ・キーボード"]
+    C --> C1["SafariやChromeでWeb版を確認・プレビューURLを共有"]
+    D --> D1["アプリ固有の機能を実機で確認・配布するiOS版の最終チェック"]
+
+    B1 --> E["iPhoneのアクセシビリティ確認"]
+    C1 --> E
+    D1 --> E
+    E --> F["VoiceOverの読み上げ順・ボタン名・文字サイズを拡大したときの表示"]
+```
+
 このプロジェクトは iOS・Android 向けの Expo アプリで、Safari や Chrome でも Web 版を確認できます。
 
 | 確認環境 | 用途 |
