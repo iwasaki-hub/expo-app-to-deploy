@@ -1,5 +1,19 @@
 # expo-app-to-deploy 引き継ぎ
 
+## 次回の再開に使う依頼文
+
+次の文をそのまま Codex に貼り付けてください。
+
+```text
+iwasaki-hub/expo-app-to-deploy の開発を再開してください。
+まずリポジトリの HANDOFF.md と AGENTS.md を読み、main の最新コミットと Expo Workflows の本番デプロイ状況を確認してください。
+確認できた状態を共有してから、今回依頼する作業を進めてください。
+```
+
+- **開発を始める** → [ローカルで再開する](#ローカルで再開する)
+- **公開状況を見る** → [Expo Workflows](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/workflows) · [本番の公開ガイド](https://expo-app-to-deploy.expo.app/guide)
+- **変更を公開する** → [変更を確認して公開する](#変更を確認して公開する)
+
 2026年11月19日（日本時間）時点の記録です。再開時は GitHub の `main` と Expo の Workflows で最新状態を確認してください。
 
 ## プロジェクトと公開先
@@ -56,5 +70,3 @@ npx expo serve
 - 急ぎの Web プレビューは、プロジェクトのルートで `npx expo export --platform web` の後に `npx eas-cli@latest deploy` を実行します。本番を手動で更新するときは `deploy --prod` を使います。
 
 Expo プロジェクトは [app.json](app.json) の `owner` と `extra.eas.projectId` で紐づいています。手動公開の前に `npx eas-cli@latest project:info` で `fullName` が `@masa-practice/expo-app-to-deploy` であることを確認してください。認証情報はリポジトリに保存せず、必要に応じて Expo CLI でログインします。
-
-次回 Codex に依頼する場合は「`iwasaki-hub/expo-app-to-deploy` の `HANDOFF.md` と `AGENTS.md` を読み、最新の `main` と Expo Workflows の状態を確認してから再開してください」と伝えれば、この記録から作業を始められます。
