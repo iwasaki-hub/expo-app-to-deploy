@@ -83,7 +83,48 @@ const steps: GuideStep[] = [
   },
 ];
 
+const workflowExamples = [
+  {
+    path: ".eas/workflows/pr-preview.yml",
+    description: "PR を作成・再オープンしたときや、PR のブランチに push したときにプレビューを公開します。",
+    yaml: `name: Web Preview
+
+on:
+  pull_request: {}
+
+jobs:
+  deploy:
+    name: Deploy Web Preview
+    type: deploy
+    environment: preview
+    params:
+      prod: false`,
+  },
+  {
+    path: ".eas/workflows/deploy-production.yml",
+    description: "main への push（PR のマージを含む）で固定の本番 URL を更新します。",
+    yaml: `name: Web Production
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Deploy Web Production
+    type: deploy
+    environment: production
+    params:
+      prod: true`,
+  },
+] as const;
+
 const guides = [
+  {
+    href: "https://docs.expo.dev/eas/hosting/workflows/",
+    title: "Web 版を自動デプロイ",
+    description: "Expo Workflows のトリガーとデプロイ設定を確認する",
+  },
   {
     href: "https://docs.expo.dev/deploy/web/",
     title: "Web プレビューを公開",
@@ -146,15 +187,66 @@ export default function Guide() {
           </View>
         ))}
 
+        <Text accessibilityRole="header" style={styles.sectionTitle}>
+          GitHub から自動デプロイ
+        </Text>
         <View style={styles.step}>
           <Text accessibilityRole="header" style={styles.guideTitle}>
-            このリポジトリの自動デプロイ
+            1. Expo と GitHub を接続
           </Text>
           <Text style={styles.body}>
-            GitHub と Expo Workflows を連携済みです。PR の作成・更新で Web プレビューを公開し、
-            main への push（PR のマージを含む）で本番 URL が更新されます。
-            結果と公開 URL は Expo ダッシュボードで確認できます。
+            Expo に登録したプロジェクトの GitHub settings を開き、画面の案内に沿って Expo の GitHub App を設定します。
+            対象のリポジトリを接続し、app.json と package.json がリポジトリのルートにある場合は Base directory を空欄にします。
+            Hosting のサブドメインが未設定なら、Expo ダッシュボードの Hosting で設定します。
           </Text>
+          <Link
+            href="https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/github"
+            style={styles.command}
+          >
+            このプロジェクトの GitHub 設定 ↗
+          </Link>
+        </View>
+        <View style={styles.step}>
+          <Text accessibilityRole="header" style={styles.guideTitle}>
+            2. ワークフローを追加して push
+          </Text>
+          <Text style={styles.body}>
+            Expo アプリのルートに .eas/workflows/ を作り、以下の YAML を保存して GitHub に push します。
+            このリポジトリには両方の設定が入っています。
+          </Text>
+          {workflowExamples.map(({ path, description, yaml }) => (
+            <View key={path} style={styles.commandBlock}>
+              <Text selectable style={styles.guideTitle}>{path}</Text>
+              <Text style={styles.guideDescription}>{description}</Text>
+              <Text selectable style={styles.command}>{yaml}</Text>
+            </View>
+          ))}
+          <Text style={styles.body}>
+            type: deploy が Web 版の出力から公開までを実行します。prod: false はプレビュー、prod: true は本番への公開です。
+            自動公開ではローカルで export や deploy を実行する必要はありません。
+          </Text>
+        </View>
+        <View style={styles.step}>
+          <Text accessibilityRole="header" style={styles.guideTitle}>
+            3. プレビューと本番の公開結果を確認
+          </Text>
+          <Text style={styles.body}>
+            作業ブランチから PR を開き、Expo ダッシュボードの Workflows で Web Preview の成功を確認します。
+            Hosting でプレビュー URL を開き、動作を確認してから PR を main にマージします。
+            Web Production が成功したら、固定の本番 URL を開いて反映を確認します。
+          </Text>
+          <Text style={styles.body}>
+            無料枠では実行待ちになることがあります。失敗した場合は Workflows で対象ジョブのログを開きます。
+          </Text>
+          <Link
+            href="https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/workflows"
+            style={styles.command}
+          >
+            このプロジェクトの Workflows ↗
+          </Link>
+          <Link href="https://expo-app-to-deploy.expo.app/" style={styles.command}>
+            このプロジェクトの本番サイト ↗
+          </Link>
         </View>
 
         <Text accessibilityRole="header" style={styles.sectionTitle}>
