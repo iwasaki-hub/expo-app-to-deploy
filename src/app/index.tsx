@@ -1,33 +1,10 @@
-import { Link } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const colors = {
-  background: "#10111A",
-  panel: "#191B28",
-  border: "#333548",
-  text: "#FAF9FF",
-  muted: "#B8B9CD",
-  accent: "#D5C8FF",
-  ink: "#211738",
-};
-
-const guides = [
-  {
-    href: "https://docs.expo.dev/deploy/web/",
-    title: "Web プレビューを公開",
-    description: "Expo Hosting で共有できる URL を作成する",
-  },
-  {
-    href: "https://docs.expo.dev/build/setup/",
-    title: "モバイルアプリをビルド",
-    description: "iOS・Android 向けのビルドを作成する",
-  },
-] as const;
+import { colors } from "../components/preview-colors";
 
 export default function Index() {
-  const { top, bottom, left, right } = useSafeAreaInsets();
+  const { top, left, right } = useSafeAreaInsets();
 
   return (
     <ScrollView
@@ -35,12 +12,11 @@ export default function Index() {
       contentInsetAdjustmentBehavior="never"
       contentContainerStyle={{
         paddingTop: top + 24,
-        paddingBottom: bottom + 32,
+        paddingBottom: 32,
         paddingLeft: left + 20,
         paddingRight: right + 20,
       }}
     >
-      <StatusBar style="light" />
       <View style={styles.content}>
         <View style={styles.brand}>
           <View style={styles.brandIcon} />
@@ -68,28 +44,6 @@ export default function Index() {
               iOS・Android・Web に向けた Expo アプリのプレビュー画面です。
             </Text>
           </View>
-        </View>
-
-        <View style={styles.resources}>
-          <Text accessibilityRole="header" style={styles.sectionTitle}>
-            公開ガイド
-          </Text>
-          {guides.map(({ href, title, description }) => (
-            <Link key={href} href={href} asChild>
-              <Pressable
-                accessibilityRole="link"
-                style={({ pressed }) => [styles.guide, pressed && styles.pressed]}
-              >
-                <View style={styles.guideCopy}>
-                  <Text style={styles.guideTitle}>{title}</Text>
-                  <Text style={styles.guideDescription}>{description}</Text>
-                </View>
-                <View style={styles.arrowBadge} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-                  <Text style={styles.arrow}>↗</Text>
-                </View>
-              </Pressable>
-            </Link>
-          ))}
         </View>
       </View>
     </ScrollView>
@@ -142,31 +96,4 @@ const styles = StyleSheet.create({
   intro: { gap: 14, paddingHorizontal: 24, paddingBottom: 28 },
   title: { color: colors.ink, fontSize: 38, fontWeight: "800" },
   description: { color: "#493766", fontSize: 15, lineHeight: 24, maxWidth: 400 },
-  resources: { gap: 10 },
-  sectionTitle: { color: colors.text, fontSize: 20, fontWeight: "700", marginBottom: 4 },
-  guide: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 14,
-    minHeight: 76,
-    padding: 14,
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 18,
-    borderCurve: "continuous",
-    backgroundColor: colors.panel,
-  },
-  pressed: { backgroundColor: "#29243D", borderColor: colors.accent },
-  guideCopy: { flex: 1, gap: 4 },
-  guideTitle: { color: colors.text, fontSize: 16, fontWeight: "700" },
-  guideDescription: { color: colors.muted, fontSize: 13, lineHeight: 20 },
-  arrowBadge: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#302747",
-  },
-  arrow: { color: colors.accent, fontSize: 19 },
 });
