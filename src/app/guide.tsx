@@ -7,43 +7,79 @@ import { colors } from "../components/preview-colors";
 type GuideStep = {
   title: string;
   before: string;
-  commands: string[];
+  commands: { command: string; description: string }[];
+  outputModes?: { mode: string; description: string }[];
+  example?: string;
   after?: string;
 };
 
 const steps: GuideStep[] = [
   {
     title: "Expo プロジェクトを作成",
-    before: "Node.js LTS を用意し、ターミナルで Expo Router を含む標準テンプレートからアプリを作ります。my-expo-app は好きなアプリ名に置き換えます。",
-    commands: ["npx create-expo-app@latest my-expo-app", "cd my-expo-app"],
+    before: "Node.js LTS を用意します。my-expo-app は好きなアプリ名に置き換えてください。",
+    commands: [
+      {
+        command: "npx create-expo-app@latest my-expo-app",
+        description: "Expo Router を含む標準テンプレートでアプリを作成します。",
+      },
+      { command: "cd my-expo-app", description: "作成したプロジェクトのフォルダに移動します。" },
+    ],
   },
   {
     title: "iPhone で動作確認",
-    before: "iPhone に Expo Go を入れます。PC と iPhone を同じ Wi-Fi に接続して開発サーバーを起動し、表示された QR コードを iPhone で読み取ります。",
-    commands: ["npx expo start"],
-    after: "iPhone では Expo CLI と Expo Go に同じ Expo アカウントでログインしてください。PC のブラウザで確認する場合は、開発サーバーで w を押します。",
+    before: "iPhone に Expo Go を入れ、PC と iPhone を同じ Wi-Fi に接続します。",
+    commands: [
+      {
+        command: "npm start",
+        description: "package.json の start スクリプト（expo start）を実行し、開発サーバーを起動します。",
+      },
+    ],
+    after: "iPhone では Expo CLI と Expo Go に同じ Expo アカウントでログインし、表示された QR コードを読み取ります。PC のブラウザで確認する場合は、開発サーバーで w を押します。",
   },
   {
     title: "Expo アカウントに登録",
-    before: "開発サーバーを停止するか別のターミナルを開き、プロジェクトのルートで実行します。init の案内に沿って、公開先の Expo アカウントを選びます。",
+    before: "開発サーバーを停止するか別のターミナルを開き、プロジェクトのルートで実行します。",
     commands: [
-      "npx eas-cli@latest login",
-      "npx eas-cli@latest init",
-      "npx eas-cli@latest project:info",
+      { command: "npx eas-cli@latest login", description: "Expo アカウントにログインします。" },
+      {
+        command: "npx eas-cli@latest init",
+        description: "案内に沿ってアカウントを選び、EAS プロジェクトを作成するか既存のプロジェクトに紐づけます。",
+      },
+      {
+        command: "npx eas-cli@latest project:info",
+        description: "紐づいたプロジェクトの fullName（@アカウント/スラッグ）と固有の ID を表示します。",
+      },
     ],
-    after: "最後のコマンドで、意図したアカウントとプロジェクトに紐づいていることを確認します。",
+    example: "fullName  @masa-practice/expo-app-to-deploy\nID        200513de-0587-41c5-bf74-dbad4d538415",
+    after: "fullName が意図した公開先か確認します。EAS project not configured と表示された場合は、先に init で紐づけます。",
   },
   {
     title: "Web プレビューを公開",
-    before: "app.json の expo.web.output を static または server に設定します。このリポジトリでは server を使っています。",
-    commands: ["npx expo export --platform web", "npx eas-cli@latest deploy"],
-    after: "初回はサブドメインを求められたら選び、完了後に表示されるプレビュー URL を Safari や Chrome で開きます。プレビュー URL はデプロイごとに発行されます。",
+    before: "app.json の expo.web.output で、Web ページを生成するタイミングを選びます。このリポジトリは SDK 58 の server を使っています。",
+    outputModes: [
+      {
+        mode: "static",
+        description: "ビルド時に HTML を生成します。紹介サイトやガイドなど、更新のたびに再ビルドできるページに向いています。",
+      },
+      {
+        mode: "server",
+        description: "アクセス時にサーバーで HTML を生成します。ログイン状態など、リクエストごとに内容が変わるページに向いています。Expo Hosting など、サーバー処理を実行できる公開先が必要です。",
+      },
+    ],
+    commands: [
+      { command: "npx expo export --platform web", description: "設定に従って Web 版を dist/ に出力します。" },
+      { command: "npx eas-cli@latest deploy", description: "Web 版を Expo Hosting にアップロードし、プレビュー URL を発行します。" },
+    ],
+    after: "初回はサブドメインを求められたら選び、完了後に表示されるプレビュー URL を Safari や Chrome で開きます。",
   },
   {
     title: "固定の本番 URL に公開",
-    before: "プレビューを確認したら、公開するソースから Web 版を出力し、本番にデプロイします。",
-    commands: ["npx expo export --platform web", "npx eas-cli@latest deploy --prod"],
-    after: "完了後に表示される固定の本番 URL を開きます。ソースを更新したら同じ手順で本番 URL に反映できます。",
+    before: "プレビューで動作を確認したら、本番に公開します。",
+    commands: [
+      { command: "npx expo export --platform web", description: "公開するソースから Web 版を出力します。" },
+      { command: "npx eas-cli@latest deploy --prod", description: "Expo Hosting の固定の本番 URL を最新の Web 版に更新します。" },
+    ],
+    after: "完了後に表示される本番 URL を開き、反映を確認します。",
   },
 ];
 
@@ -82,19 +118,30 @@ export default function Guide() {
           新しい Expo アプリを作り、実機で確認してから Expo Hosting に Web 版を公開します。
         </Text>
 
-        {steps.map(({ title, before, commands, after }, index) => (
+        {steps.map(({ title, before, commands, outputModes, example, after }, index) => (
           <View key={title} style={styles.step}>
             <Text accessibilityRole="header" style={styles.guideTitle}>
               {index + 1}. {title}
             </Text>
             <Text style={styles.body}>{before}</Text>
-            <View style={styles.commands}>
-              {commands.map((command) => (
-                <Text key={command} selectable style={styles.command}>
-                  {command}
-                </Text>
-              ))}
-            </View>
+            {outputModes?.map(({ mode, description }) => (
+              <View key={mode} style={styles.detail}>
+                <Text style={styles.guideTitle}>{mode}</Text>
+                <Text style={styles.body}>{description}</Text>
+              </View>
+            ))}
+            {commands.map(({ command, description }) => (
+              <View key={command} style={styles.commandBlock}>
+                <Text selectable style={styles.command}>{command}</Text>
+                <Text style={styles.guideDescription}>{description}</Text>
+              </View>
+            ))}
+            {example && (
+              <View style={styles.commandBlock}>
+                <Text style={styles.guideTitle}>このリポジトリでの表示例</Text>
+                <Text selectable style={styles.command}>{example}</Text>
+              </View>
+            )}
             {after && <Text style={styles.body}>{after}</Text>}
           </View>
         ))}
@@ -148,7 +195,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.panel,
   },
   body: { color: colors.muted, fontSize: 15, lineHeight: 24 },
-  commands: { gap: 6, padding: 12, borderRadius: 10, backgroundColor: colors.background },
+  detail: { gap: 4 },
+  commandBlock: { gap: 6, padding: 12, borderRadius: 10, backgroundColor: colors.background },
   command: { color: colors.accent, fontSize: 14, lineHeight: 21 },
   guide: {
     flexDirection: "row",
