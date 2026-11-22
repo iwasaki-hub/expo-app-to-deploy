@@ -14,7 +14,7 @@ iwasaki-hub/expo-app-to-deploy の開発を再開してください。
 - **公開状況を見る** → [Expo Workflows](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/workflows) · [本番の公開ガイド](https://expo-app-to-deploy.expo.app/guide)
 - **変更を公開する** → [変更を確認して公開する](#変更を確認して公開する)
 
-2026年11月19日（日本時間）時点の記録です。再開時は GitHub の `main` と Expo の Workflows で最新状態を確認してください。
+2026年11月22日（日本時間）時点の記録です。再開時は GitHub の `main` と Expo の Workflows で最新状態を確認してください。
 
 ## プロジェクトと公開先
 
@@ -28,6 +28,10 @@ iwasaki-hub/expo-app-to-deploy の開発を再開してください。
 | Web 出力 | [app.json](app.json) の `expo.web.output` は `server` |
 
 確認済みのアプリ変更は [PR #6](https://github.com/iwasaki-hub/expo-app-to-deploy/pull/6)（`de841d2`）までです。「公開ガイド」には新規作成、Expo Go、EAS 登録、手動公開、GitHub 連携による自動公開が載っています。PR #6 の [プレビュー](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/workflows/01a1f268-8e7e-70e0-af04-52846badbfcf) と [本番デプロイ](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/workflows/01a1f269-2cd8-7677-a798-a61e1d1d8496) はいずれも成功を確認済みです。
+
+[PR #7](https://github.com/iwasaki-hub/expo-app-to-deploy/pull/7)（`c0cc973`）で ESLint 設定と PR チェックを追加しました。GitHub Actions の Lint と型チェック、EAS の Web プレビュー、マージ後の EAS 本番公開が成功しました。[GitHub Actions](https://github.com/iwasaki-hub/expo-app-to-deploy/actions/runs/44990393862) · [EAS Web プレビュー](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/workflows/01a201c4-d059-75e6-b55c-d3af48bd4397) · [EAS 本番公開](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/workflows/01a201c6-30be-74bd-9e9d-b0b4060e08bb)
+
+ESLint 9 のサポート終了に伴い、`npm ci` で警告が出ます。Expo の ESLint 設定が使うプラグインの ESLint 10 対応を待つため、更新は保留中です。
 
 ## ローカルで再開する
 
@@ -56,14 +60,16 @@ PC のブラウザで開くにはターミナルで `w` を押します。iPhone
 ## 変更を確認して公開する
 
 ```bash
-npx tsc --noEmit
+npm ci
 npm run lint
+npx tsc --noEmit
 npx expo export --platform web
 npx expo serve
 ```
 
-ローカルで `/` と `/guide` を開き、変更箇所とタブの切り替えを確認します。初回の lint では Expo が ESLint の設定や依存関係の追加を案内することがあります。その場合は検証後に `git status` で差分を確認してください。
+ローカルで `/` と `/guide` を開き、変更箇所とタブの切り替えを確認します。
 
+- [PR チェック](.github/workflows/pr-checks.yml) は `main` 向けの PR で Lint と型チェックを実行します。
 - [PR プレビュー](.eas/workflows/pr-preview.yml) は PR の作成・再オープン・更新で起動します。
 - [本番公開](.eas/workflows/deploy-production.yml) は `main` への push で起動します。README などの文書だけの変更でも起動します。
 - 公開結果は [Workflows](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/workflows) で確認します。無料枠のキューで待機中の場合は実行開始を待ち、失敗時は対象ジョブのログを確認します。

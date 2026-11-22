@@ -181,7 +181,7 @@ This command will move the starter code to the **example** directory and create 
 
 ### Other setup steps
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
+- Run `npm ci`, then `npm run lint` and `npx tsc --noEmit` to check changes locally. GitHub Actions also runs both checks on pull requests targeting `main`. See [HANDOFF.md](HANDOFF.md) for the verified PR #7 results and the deferred ESLint 9 warning.
 - If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
 - Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
 
