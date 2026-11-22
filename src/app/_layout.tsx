@@ -1,9 +1,12 @@
-import { Tabs } from "expo-router";
+import { Tabs, usePathname } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
+import { GlassTabIndicator } from "../components/glass-tab-indicator";
 import { colors } from "../components/preview-colors";
 
 export default function RootLayout() {
+  const pathname = usePathname();
+
   return (
     <>
       <StatusBar style="light" />
@@ -12,9 +15,9 @@ export default function RootLayout() {
         screenOptions={{
           headerShown: false,
           sceneStyle: { backgroundColor: colors.background },
-          tabBarActiveTintColor: colors.ink,
-          tabBarActiveBackgroundColor: colors.accent,
+          tabBarActiveTintColor: colors.text,
           tabBarInactiveTintColor: colors.muted,
+          tabBarBackground: () => <GlassTabIndicator guideSelected={pathname === "/guide"} />,
           tabBarStyle: { backgroundColor: colors.panel, borderTopColor: colors.border },
           tabBarItemStyle: { minHeight: 48, borderRadius: 12, marginHorizontal: 4 },
           tabBarLabelStyle: { fontSize: 14, fontWeight: "700" },
