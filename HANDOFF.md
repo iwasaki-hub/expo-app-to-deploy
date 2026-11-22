@@ -27,7 +27,15 @@ iwasaki-hub/expo-app-to-deploy の開発を再開してください。
 | 構成 | Expo SDK 58、Expo Router、React Native、TypeScript、npm |
 | Web 出力 | [app.json](app.json) の `expo.web.output` は `server` |
 
-確認済みのアプリ変更は [PR #6](https://github.com/iwasaki-hub/expo-app-to-deploy/pull/6)（`de841d2`）までです。「公開ガイド」には新規作成、Expo Go、EAS 登録、手動公開、GitHub 連携による自動公開が載っています。PR #6 の [プレビュー](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/workflows/01a1f268-8e7e-70e0-af04-52846badbfcf) と [本番デプロイ](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/workflows/01a1f269-2cd8-7677-a798-a61e1d1d8496) はいずれも成功を確認済みです。
+### 最新の変更と検証結果
+
+- ホームに「公開ガイドを開く」リンクを追加し、公開ガイドの見出し、コード例、リンクカードを読みやすくしました。Chrome で幅 320 CSS px、リンクの文字拡大、タップ・キーボード遷移を確認済みです。[PR #9（`b5295b4`）](https://github.com/iwasaki-hub/expo-app-to-deploy/pull/9)
+- 選択中の下部タブへ半透明のガラス風インジケーターが移動します。Chrome で左右の移動と、モーション軽減時の即時切り替えを確認済みです。Lint・型チェック、EAS Web プレビュー、マージ後の本番公開は成功しました。[PR #10（`7975fe2`）](https://github.com/iwasaki-hub/expo-app-to-deploy/pull/10) · [GitHub Actions](https://github.com/iwasaki-hub/expo-app-to-deploy/actions/runs/44992041947) · [EAS Web プレビュー](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/workflows/01a201da-6dab-7635-bf3c-63ee3e56ebd6) · [EAS 本番公開](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/workflows/01a201db-f098-7713-9899-0a78c29b7bff)
+- 次回は iOS・Android 実機でタブの表示と切り替え、文字拡大時の表示を確認します。iOS の VoiceOver と「視差効果を減らす」を有効にした状態も未確認です。
+
+### 公開ガイドと開発環境の履歴
+
+「公開ガイド」には新規作成、Expo Go、EAS 登録、手動公開、GitHub 連携による自動公開が載っています。[PR #6（`de841d2`）](https://github.com/iwasaki-hub/expo-app-to-deploy/pull/6)
 
 [PR #7](https://github.com/iwasaki-hub/expo-app-to-deploy/pull/7)（`c0cc973`）で ESLint 設定と PR チェックを追加しました。GitHub Actions の Lint と型チェック、EAS の Web プレビュー、マージ後の EAS 本番公開が成功しました。[GitHub Actions](https://github.com/iwasaki-hub/expo-app-to-deploy/actions/runs/44990393862) · [EAS Web プレビュー](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/workflows/01a201c4-d059-75e6-b55c-d3af48bd4397) · [EAS 本番公開](https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/workflows/01a201c6-30be-74bd-9e9d-b0b4060e08bb)
 
@@ -51,6 +59,7 @@ PC のブラウザで開くにはターミナルで `w` を押します。iPhone
 | ファイル | 役割 |
 | --- | --- |
 | [src/app/_layout.tsx](src/app/_layout.tsx) | 「ホーム」「公開ガイド」の下部タブ |
+| [src/components/glass-tab-indicator.tsx](src/components/glass-tab-indicator.tsx) | 選択中のタブを示すガラス風インジケーター |
 | [src/app/index.tsx](src/app/index.tsx) | ホーム画面（`/`） |
 | [src/app/guide.tsx](src/app/guide.tsx) | 公開ガイド（`/guide`）。表示する YAML 例は実際の設定と揃える |
 | [src/components/preview-colors.ts](src/components/preview-colors.ts) | 画面とタブで共有する配色 |
