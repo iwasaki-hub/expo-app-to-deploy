@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { colors } from "../components/preview-colors";
@@ -152,12 +152,14 @@ export default function Guide() {
       }}
     >
       <View style={styles.resources}>
-        <Text accessibilityRole="header" style={styles.sectionTitle}>
-          公開ガイド
-        </Text>
-        <Text style={styles.intro}>
-          新しい Expo アプリを作り、実機で確認してから Expo Hosting に Web 版を公開します。
-        </Text>
+        <View style={styles.introduction}>
+          <Text accessibilityRole="header" style={styles.pageTitle}>
+            公開ガイド
+          </Text>
+          <Text style={styles.intro}>
+            新しい Expo アプリを作り、実機で確認してから Expo Hosting に Web 版を公開します。
+          </Text>
+        </View>
 
         {steps.map(({ title, before, commands, outputModes, example, after }, index) => (
           <View key={title} style={styles.step}>
@@ -201,7 +203,7 @@ export default function Guide() {
           </Text>
           <Link
             href="https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/github"
-            style={styles.command}
+            style={styles.inlineLink}
           >
             このプロジェクトの GitHub 設定 ↗
           </Link>
@@ -240,11 +242,11 @@ export default function Guide() {
           </Text>
           <Link
             href="https://expo.dev/accounts/masa-practice/projects/expo-app-to-deploy/workflows"
-            style={styles.command}
+            style={styles.inlineLink}
           >
             このプロジェクトの Workflows ↗
           </Link>
-          <Link href="https://expo-app-to-deploy.expo.app/" style={styles.command}>
+          <Link href="https://expo-app-to-deploy.expo.app/" style={styles.inlineLink}>
             このプロジェクトの本番サイト ↗
           </Link>
         </View>
@@ -253,11 +255,8 @@ export default function Guide() {
           Expo 公式ドキュメント
         </Text>
         {guides.map(({ href, title, description }) => (
-          <Link key={href} href={href} asChild>
-            <Pressable
-              accessibilityRole="link"
-              style={({ pressed }) => [styles.guide, pressed && styles.pressed]}
-            >
+          <Link key={href} href={href} asChild style={styles.guide}>
+            <Pressable accessibilityRole="link">
               <View style={styles.guideCopy}>
                 <Text style={styles.guideTitle}>{title}</Text>
                 <Text style={styles.guideDescription}>{description}</Text>
@@ -275,9 +274,11 @@ export default function Guide() {
 
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.background },
-  resources: { width: "100%", maxWidth: 760, alignSelf: "center", gap: 10 },
-  sectionTitle: { color: colors.text, fontSize: 20, fontWeight: "700", marginBottom: 4 },
-  intro: { color: colors.muted, fontSize: 16, lineHeight: 25, marginBottom: 8 },
+  resources: { width: "100%", maxWidth: 760, alignSelf: "center", gap: 12 },
+  introduction: { gap: 8, marginBottom: 8 },
+  pageTitle: { color: colors.text, fontSize: 30, fontWeight: "800" },
+  sectionTitle: { color: colors.text, fontSize: 22, fontWeight: "700", marginTop: 16 },
+  intro: { color: colors.muted, fontSize: 16, lineHeight: 25, maxWidth: 520 },
   step: {
     padding: 16,
     gap: 10,
@@ -289,7 +290,18 @@ const styles = StyleSheet.create({
   body: { color: colors.muted, fontSize: 15, lineHeight: 24 },
   detail: { gap: 4 },
   commandBlock: { gap: 6, padding: 12, borderRadius: 10, backgroundColor: colors.background },
-  command: { color: colors.accent, fontSize: 14, lineHeight: 21 },
+  command: {
+    color: colors.accent,
+    fontFamily: Platform.select({ ios: "Menlo", default: "monospace" }),
+    fontSize: 14,
+    lineHeight: 22,
+  },
+  inlineLink: {
+    color: colors.accent,
+    fontSize: 15,
+    lineHeight: 24,
+    textDecorationLine: "underline",
+  },
   guide: {
     flexDirection: "row",
     alignItems: "center",
@@ -302,13 +314,13 @@ const styles = StyleSheet.create({
     borderCurve: "continuous",
     backgroundColor: colors.panel,
   },
-  pressed: { backgroundColor: "#29243D", borderColor: colors.accent },
-  guideCopy: { flex: 1, gap: 4 },
+  guideCopy: { flex: 1, minWidth: 0, gap: 4 },
   guideTitle: { color: colors.text, fontSize: 16, fontWeight: "700" },
   guideDescription: { color: colors.muted, fontSize: 13, lineHeight: 20 },
   arrowBadge: {
     width: 38,
     height: 38,
+    flexShrink: 0,
     borderRadius: 19,
     alignItems: "center",
     justifyContent: "center",
