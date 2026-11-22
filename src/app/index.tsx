@@ -1,4 +1,5 @@
-import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { Link } from "expo-router";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { colors } from "../components/preview-colors";
@@ -43,6 +44,11 @@ export default function Index() {
             <Text style={styles.description}>
               iOS・Android・Web に向けた Expo アプリのプレビュー画面です。
             </Text>
+            <Link href="/guide" asChild style={styles.guideLink}>
+              <Pressable accessibilityRole="link">
+                <Text style={styles.guideLinkLabel}>公開ガイドを開く</Text>
+              </Pressable>
+            </Link>
           </View>
         </View>
       </View>
@@ -96,4 +102,15 @@ const styles = StyleSheet.create({
   intro: { gap: 14, paddingHorizontal: 24, paddingBottom: 28 },
   title: { color: colors.ink, fontSize: 38, fontWeight: "800" },
   description: { color: "#493766", fontSize: 15, lineHeight: 24, maxWidth: 400 },
+  guideLink: {
+    alignSelf: "flex-start",
+    justifyContent: "center",
+    maxWidth: "100%",
+    minHeight: 48,
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 12,
+    backgroundColor: colors.ink,
+  },
+  guideLinkLabel: { color: colors.text, fontSize: 16, fontWeight: "700" },
 });
